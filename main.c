@@ -6,51 +6,10 @@
 #include <errno.h>
 #include <stdio.h>
 #include "header.h"
+#include "mapa.h"
 
 MAPA m;
-void liberaMapa(){
-	for (size_t i = 0; i < m.linhas; ++i) {
-		free(m.matriz[i]);
-	}
-	free(m.matriz);
-}
-void alocaMapa(){
-	m.matriz = malloc(sizeof(char*) * m.linhas);
-	for (size_t i = 0; i < m.linhas; ++i) {
-		m.matriz[i] = malloc(sizeof(char) * (m.colunas+1));
-	}
-}
 
-
-
-void leMapa(){
-	FILE* f;
-	f = fopen("mapa.txt","r");
-
-	if(f==0){
-		printf("Erro na leitura do mapa\n");
-		exit(1);
-	}
-
-
-	fscanf(f, "%d %d",&m.linhas, &m.colunas);
-	printf("linhas %d colunas %d\n",m.linhas, m.colunas);
-
-	alocaMapa();
-
-	for (size_t i = 0; i < m.linhas; ++i) {
-		fscanf(f, "%s",m.matriz[i]);
-		
-	}
-	
-	fclose(f);
-}
-
-void imprimeMapa(){
-	for (size_t i = 0; i < 5; ++i) {
-		printf("%s\n",m.matriz[i]);
-	}
-}
 
 bool acabou() {
 	return false;
@@ -97,10 +56,10 @@ void move(char direcao){
 int main(int argc, char *argv[])
 {
 
-	leMapa();
+	leMapa(&m);
 
 	do {
-		imprimeMapa();
+		imprimeMapa(&m);
 
 		char comando;
 		scanf(" %c", &comando);
@@ -109,7 +68,7 @@ int main(int argc, char *argv[])
 	} while(!acabou());
 
 
-	liberaMapa();
+	liberaMapa(&m);
 	
 	return EXIT_SUCCESS;
 }
