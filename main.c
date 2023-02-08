@@ -8,6 +8,7 @@
 #include "header.h"
 #include "mapa.h"
 #include <time.h>
+#include "ui.h"
 
 MAPA m;
 POSICAO heroi;
@@ -113,19 +114,28 @@ void move(char direcao){
 	heroi.x = proximoX;
 	heroi.y = proximoY;
 }
-
 void explodePilula(){
-	for (size_t i = 1; i <= 3; ++i) {
-		if(ehValida(&m,heroi.x,heroi.y+i)){
-			if(ehParede(&m,heroi.x,heroi.y+i))
-				break;
+	if(!temPilula) return;
+	explodePilula2(heroi.x,heroi.y,0,1,3);
+	explodePilula2(heroi.x,heroi.y,0,-1,3);
+	explodePilula2(heroi.x,heroi.y,1,0,3);
+	explodePilula2(heroi.x,heroi.y,-1,0,3);
+	temPilula=false;
+}
 
-			m.matriz[heroi.x][heroi.y+1] = VAZIO;
 
-		}
-		
-	}
+void explodePilula2(int x, int y,int somaX,int somaY, int qtd){
+	if(qtd == 0) return;
 
+
+	int novoX = x + somaX;
+	int novoY = y + somaY;
+
+	if(ehParede(&m,novoX,novoY))return;
+	if(!ehValida(&m,novoX,novoY))return;
+
+	m.matriz[novoX][novoY] = VAZIO;
+	explodePilula2( novoX, novoY,somaX,somaY, qtd--);
 }
 int main(int argc, char *argv[])
 {

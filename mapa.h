@@ -1,4 +1,6 @@
-#include <stdlib.h>
+#ifndef _MAPA_H_
+
+#define _MAPA_H_
 #define HEROI '@'
 #define FANTASMA 'F'
 #define VAZIO '.'
@@ -35,3 +37,6 @@ bool podeAndar(MAPA*m,char personagem, int x, int y);
 bool ehParede(MAPA* m, int x, int y);
 bool ehPersonagem(MAPA* m,char personagem,int x, int y);
 void explodePilula();
+void explodePilula2(int x, int y,int somaX,int somaY, int qtd);
+
+#endif // !_MAPA_H_
