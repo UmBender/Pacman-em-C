@@ -7,12 +7,62 @@
 #include <stdio.h>
 #include "header.h"
 #include "mapa.h"
+#include <time.h>
 
 MAPA m;
 POSICAO heroi;
 
-bool acabou() {
+bool paraOndeFantasmaVai(int xAtual,int yAtual,
+	int* xDestino,int* yDestino){
+
+	int opcoes[4][2] ={
+		{xAtual, yAtual+1},
+		{xAtual+1, yAtual},
+		{xAtual, yAtual-1},
+		{xAtual-1, yAtual}
+	};
+	srand(time(0));
+	for (size_t i = 0; i < 10; ++i) {
+		int posicao = rand()%4;
+		
+		if(podeAndar(&m,FANTASMA, opcoes[posicao][0],opcoes[posicao][1])){
+
+			*xDestino = opcoes[posicao][0];
+			*yDestino = opcoes[posicao][1];
+
+			return true;
+		}
+		
+	}
 	return false;
+}
+
+
+void fantasma() {
+	MAPA copia;
+
+	copiaMapa(&copia, &m);
+	for (size_t i = 0; i < m.linhas; ++i) {
+		for (size_t j = 0; j < m.colunas; ++j) {
+			
+			if (copia.matriz[i][j] == FANTASMA) {
+				int xDestino;
+				int yDestino;
+				bool encontrou = paraOndeFantasmaVai(i,j,&xDestino,&yDestino);
+				if(encontrou){
+					andaMapa(&m,i,j,xDestino,yDestino);
+
+				}
+			}
+		}
+		
+	}
+	liberaMapa(&copia);
+}
+bool acabou() {
+	POSICAO pos;
+	bool pacmanNoMapa = encontraMapa(&m, &pos, HEROI);
+	return !pacmanNoMapa;
 }
 
 bool ehDirecao(char direcao){
@@ -31,34 +81,29 @@ void move(char direcao){
 
 	int proximoX= heroi.x;
 	int proximoY= heroi.y;
-
+	
 	switch (direcao) {
 
 		case ESQUERDA:
-			m.matriz[heroi.x][heroi.y-1] = '@';
-			heroi.y--;
+			proximoY--;
 
 			break;
 		case CIMA:
-			m.matriz[heroi.x-1][heroi.y] = '@';
-			heroi.x--;
+			proximoX--;
 
 			break;
 		case BAIXO:
-			m.matriz[heroi.x+1][heroi.y] = '@';
-			heroi.x++;
+			proximoX++;
 
 			break;
 		case DIREITA:
-			m.matriz[heroi.x][heroi.y+1] = '@';
-			heroi.y++;
+			proximoY++;
 
 			break;
 	}
-	if (!ehValida(&m,proximoX,proximoY))
+	if (!podeAndar(&m,HEROI,proximoX,proximoY))
 		return;
-	if (!ehVazia(&m,proximoX,proximoY))
-		return;
+
 
 	andaMapa(&m, heroi.x,heroi.y, proximoX, proximoY);	
 	heroi.x = proximoX;
@@ -77,7 +122,7 @@ int main(int argc, char *argv[])
 		char comando;
 		scanf(" %c", &comando);
 		move(comando);
-
+		fantasma();
 	} while(!acabou());
 
 

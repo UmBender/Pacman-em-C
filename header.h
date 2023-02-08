@@ -6,3 +6,5 @@
 bool acabou();
 void move(char direcao);
 bool ehDirecao(char direcao);
+bool paraOndeFantasmaVai(int xAtual,int yAtual,int* xDestino,int* yDestino);
+

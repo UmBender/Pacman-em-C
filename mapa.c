@@ -1,7 +1,25 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "mapa.h"
+
+
+bool podeAndar(MAPA*m,char personagem, int x, int y){
+	return ehValida(m,x,y) && 
+		!ehParede(m,x,y) &&
+		!ehPersonagem(m,personagem, x, y);
+}
+void copiaMapa(MAPA* destino, MAPA* origem){
+	destino->linhas = origem->linhas;
+	destino->colunas = origem->colunas;
+
+	alocaMapa(destino);
+
+	for (size_t i = 0; i < origem->linhas; ++i) {
+		strcpy(destino->matriz[i],origem->matriz[i]);	
+	}
+}
 
 void andaMapa(MAPA* m,int xOrigem, int yOrigem,
 	int xDestino, int yDestino){
@@ -24,22 +42,30 @@ bool ehValida(MAPA* m, int x, int y){
 	return true;
 }
 
-void encontraMapa(MAPA*m, POSICAO* p, char c){
+bool encontraMapa(MAPA*m, POSICAO* p, char c){
 	for (size_t i = 0; i < m->linhas; ++i) {
 		for (size_t j = 0; j < m->colunas; ++j) {
 			if(m->matriz[i][j] == c) {
 				p->x = i;
 				p->y = j;
-				break;
+				return true;
 			}
 
 		}
 
 	}
-
-
+	return false;
 }
 
+bool ehParede(MAPA* m, int x, int y){
+	return m->matriz[x][y] == PAREDE_VERTICAL ||
+		m->matriz[x][y] == PAREDE_HORIZONTAL;
+}
+
+bool ehPersonagem(MAPA* m,char personagem,
+		int x, int y){
+	return m->matriz[x][y] == personagem;
+}
 void liberaMapa(MAPA* m){
 	for (size_t i = 0; i < m->linhas; ++i) {
 		free(m->matriz[i]);
