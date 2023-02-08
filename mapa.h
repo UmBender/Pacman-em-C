@@ -4,6 +4,7 @@
 #define VAZIO '.'
 #define PAREDE_VERTICAL '|'
 #define PAREDE_HORIZONTAL '-'
+#define PILULA 'P'
 struct mapa
 {
 	char** matriz;
@@ -33,3 +34,4 @@ void copiaMapa(MAPA* destino, MAPA* origem);
 bool podeAndar(MAPA*m,char personagem, int x, int y);
 bool ehParede(MAPA* m, int x, int y);
 bool ehPersonagem(MAPA* m,char personagem,int x, int y);
+void explodePilula();

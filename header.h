@@ -2,6 +2,7 @@
 #define BAIXO 's'
 #define DIREITA 'd'
 #define ESQUERDA 'a'
+#define BOMBA 'b'
 
 bool acabou();
 void move(char direcao);
