@@ -15,14 +15,16 @@ bool acabou() {
 	return false;
 }
 
+bool ehDirecao(char direcao){
+	return  direcao == 'a' ||
+			direcao == 's' ||
+			direcao == 'd' ||
+			direcao == 'w';
+}
+
 void move(char direcao){
 
-	if (
-			direcao != 'a' &&
-			direcao != 's' &&
-			direcao != 'd' &&
-			direcao != 'w'
-	   ) {
+	if (!ehDirecao(direcao)) {
 		return;
 	}
 
@@ -32,46 +34,42 @@ void move(char direcao){
 
 	switch (direcao) {
 
-		case 'a':
+		case ESQUERDA:
 			m.matriz[heroi.x][heroi.y-1] = '@';
 			heroi.y--;
 
 			break;
-		case 'w':
+		case CIMA:
 			m.matriz[heroi.x-1][heroi.y] = '@';
 			heroi.x--;
 
 			break;
-		case 's':
+		case BAIXO:
 			m.matriz[heroi.x+1][heroi.y] = '@';
 			heroi.x++;
 
 			break;
-		case 'd':
+		case DIREITA:
 			m.matriz[heroi.x][heroi.y+1] = '@';
 			heroi.y++;
 
 			break;
 	}
-	if (proximoX >= m.linhas)
+	if (!ehValida(&m,proximoX,proximoY))
 		return;
-	if (proximoY >= m.colunas)
-		return;
-	if (m.matriz[proximoX][proximoY] != '.')
+	if (!ehVazia(&m,proximoX,proximoY))
 		return;
 
-	m.matriz[proximoX][proximoY] = '@';
-	m.matriz[heroi.x][heroi.y] = '.';
+	andaMapa(&m, heroi.x,heroi.y, proximoX, proximoY);	
 	heroi.x = proximoX;
 	heroi.y = proximoY;
-
 }
 
 int main(int argc, char *argv[])
 {
 
 	leMapa(&m);
-	encontraMapa(&m, &heroi, '@');
+	encontraMapa(&m, &heroi,HEROI);
 
 	do {
 		imprimeMapa(&m);

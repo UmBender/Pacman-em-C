@@ -1,6 +1,28 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "mapa.h"
+
+void andaMapa(MAPA* m,int xOrigem, int yOrigem,
+	int xDestino, int yDestino){
+	
+	char personagem = m->matriz[xOrigem][yOrigem];
+
+	m->matriz[xDestino][yDestino] = personagem;
+
+	m->matriz[xOrigem][yOrigem] = VAZIO;
+}
+bool ehVazia(MAPA* m, int x, int y){
+	return m->matriz[x][y] == VAZIO;
+}
+bool ehValida(MAPA* m, int x, int y){
+	if (x >= m->linhas)
+		return false;
+	if (y >= m->colunas)
+		return false;
+
+	return true;
+}
 
 void encontraMapa(MAPA*m, POSICAO* p, char c){
 	for (size_t i = 0; i < m->linhas; ++i) {

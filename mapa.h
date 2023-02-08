@@ -1,4 +1,9 @@
 #include <stdlib.h>
+#define HEROI '@'
+#define FANTASMA 'F'
+#define VAZIO '.'
+#define PAREDE_VERTICAL '|'
+#define PAREDE_HORIZONTAL '-'
 struct mapa
 {
 	char** matriz;
@@ -21,3 +26,6 @@ void leMapa(MAPA* m);
 void alocaMapa(MAPA* m);
 void imprimeMapa(MAPA* m);
 void encontraMapa(MAPA*m, POSICAO* p, char c);
+bool ehValida(MAPA* m, int x, int y);
+bool ehVazia(MAPA* m, int x, int y);
+void andaMapa(MAPA* m,int xOrigem, int yOrigem,int xDestino, int yDestino);
