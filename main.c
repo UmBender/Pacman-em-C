@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include "header.h"
 
-struct mapa m;
+MAPA m;
 void liberaMapa(){
 	for (size_t i = 0; i < m.linhas; ++i) {
 		free(m.matriz[i]);
