@@ -16,40 +16,54 @@ bool acabou() {
 }
 
 void move(char direcao){
-	int x;
-	int y;
 
-	for (size_t i = 0; i < m.linhas; ++i) {
-		for (size_t j = 0; j < m.colunas; ++j) {
-			if(m.matriz[i][j] == '@') {
-				x = i;
-				y = j;
-				break;
-			}
-			
-		}
-		
+	if (
+			direcao != 'a' &&
+			direcao != 's' &&
+			direcao != 'd' &&
+			direcao != 'w'
+	   ) {
+		return;
 	}
+
+
+	int proximoX= heroi.x;
+	int proximoY= heroi.y;
+
 	switch (direcao) {
 
 		case 'a':
-			m.matriz[x][y-1] = '@';
+			m.matriz[heroi.x][heroi.y-1] = '@';
+			heroi.y--;
 
 			break;
 		case 'w':
-			m.matriz[x-1][y] = '@';
+			m.matriz[heroi.x-1][heroi.y] = '@';
+			heroi.x--;
 
 			break;
 		case 's':
-			m.matriz[x+1][y] = '@';
+			m.matriz[heroi.x+1][heroi.y] = '@';
+			heroi.x++;
 
 			break;
 		case 'd':
-			m.matriz[x][y+1] = '@';
+			m.matriz[heroi.x][heroi.y+1] = '@';
+			heroi.y++;
 
 			break;
 	}
-	m.matriz[x][y] = '.';
+	if (proximoX >= m.linhas)
+		return;
+	if (proximoY >= m.colunas)
+		return;
+	if (m.matriz[proximoX][proximoY] != '.')
+		return;
+
+	m.matriz[proximoX][proximoY] = '@';
+	m.matriz[heroi.x][heroi.y] = '.';
+	heroi.x = proximoX;
+	heroi.y = proximoY;
 
 }
 
@@ -57,6 +71,7 @@ int main(int argc, char *argv[])
 {
 
 	leMapa(&m);
+	encontraMapa(&m, &heroi, '@');
 
 	do {
 		imprimeMapa(&m);
