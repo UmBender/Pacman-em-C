@@ -50,14 +50,18 @@ void leMapa(){
 	fclose(f);
 }
 
+void imprimeMapa(){
+	for (size_t i = 0; i < 5; ++i) {
+		printf("%s\n",mapa[i]);
+	}
+}
+
 int main(int argc, char *argv[])
 {
 
 	leMapa();
 
-	for (size_t i = 0; i < 5; ++i) {
-		printf("%s\n",mapa[i]);
-	}
+	imprimeMapa();
 
 
 	liberaMapa();
