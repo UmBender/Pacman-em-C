@@ -9,7 +9,7 @@
 #include "mapa.h"
 
 MAPA m;
-
+POSICAO heroi;
 
 bool acabou() {
 	return false;

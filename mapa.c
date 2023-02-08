@@ -2,6 +2,21 @@
 #include <stdlib.h>
 #include "mapa.h"
 
+void encontraMapa(MAPA*m, POSICAO* p, char c){
+	for (size_t i = 0; i < m->linhas; ++i) {
+		for (size_t j = 0; j < m->colunas; ++j) {
+			if(m->matriz[i][j] == c) {
+				p->x = i;
+				p->y = j;
+				break;
+			}
+
+		}
+
+	}
+
+
+}
 
 void liberaMapa(MAPA* m){
 	for (size_t i = 0; i < m->linhas; ++i) {
